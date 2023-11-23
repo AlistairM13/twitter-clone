@@ -1,11 +1,11 @@
 import FollowBar from "./layout/FollowBar";
 import Sidebar from "./layout/Sidebar";
 
-interface LayoutProps{
+interface LayoutProps {
     children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({children}) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className="h-screen">
             <div className="container h-full mx-auto xl:px-30 max-w-6xl">
@@ -17,7 +17,6 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
                     <FollowBar />
                 </div>
             </div>
-            
         </div>
     );
 }
