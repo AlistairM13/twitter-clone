@@ -5,6 +5,7 @@ import useUser from "@/hooks/useUser";
 import { PuffLoader } from "react-spinners";
 import UserHero from "@/components/users/UserHero";
 import UserBio from "@/components/users/UserBio";
+import PostFeed from "@/components/posts/PostFeed";
 
 const UserPage = () => {
     const router = useRouter()
@@ -32,6 +33,7 @@ const UserPage = () => {
             <Header label={fetchedUser.name} showBackArrow />
             <UserHero userId={userId as string} />
             <UserBio userId={userId as string} />
+            <PostFeed userId={userId as string} />
         </>
     );
 }
