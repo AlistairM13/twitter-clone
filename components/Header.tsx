@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 import { useRouter } from "next/router";
 import { BiArrowBack } from "react-icons/bi";
+import { FaGithub } from "react-icons/fa";
+import Link from 'next/link'
 
 interface HeaderProps {
     label: string
@@ -15,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ label, showBackArrow }) => {
     }, [router])
 
     return (
-        <div className="border-b-[1px] border-neutral-800 p-5">
+        <div className="border-b-[1px] flex justify-between items-center border-neutral-800 p-5">
             <div className="flex items-center gap-2">
                 {showBackArrow && (
                     <BiArrowBack
@@ -27,6 +29,9 @@ const Header: React.FC<HeaderProps> = ({ label, showBackArrow }) => {
                 )}
                 <h1 className="text-white text-xl font-bold">{label}</h1>
             </div>
+            {label == "Home" && <Link target="_github" href="https://github.com/AlistairM13/twitter-clone">
+                <FaGithub size={30} />
+            </Link>}
         </div>
     );
 }

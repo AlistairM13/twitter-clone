@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
-import  {Toaster} from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import { SessionProvider } from "next-auth/react"
+import Head from 'next/head'
 
 import Layout from '@/components/Layout'
 import LoginModal from "@/components/modals/LoginModal"
@@ -11,14 +12,19 @@ import EditModal from "@/components/modals/EditModal"
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <SessionProvider session={pageProps.session}>
-      <Toaster position="bottom-right"/>
-      <RegisterModal />
-      <LoginModal />
-      <EditModal />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </SessionProvider>
+    <>
+      <Head key="title">
+        <title>Twitter</title>
+      </Head>
+      <SessionProvider session={pageProps.session}>
+        <Toaster position="bottom-right" />
+        <RegisterModal />
+        <LoginModal />
+        <EditModal />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SessionProvider>
+    </>
   )
 }
