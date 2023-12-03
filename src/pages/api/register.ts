@@ -11,13 +11,18 @@ export default async function handler(
         return res.status(405).end()
     }
     try {
-        const {email, username, name, password} = req.body
+        const { email, username, name, password } = req.body
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        const disposition = {
+            positive: 0,
+            neutral: 0,
+            negative: 0
+        }
         const user = await prisma.user.create({
-            data:{
-                email, username, name, hashedPassword
+            data: {
+                email, username, name, hashedPassword, disposition
             }
         })
 

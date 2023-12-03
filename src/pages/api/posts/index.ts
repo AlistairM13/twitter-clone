@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import serverAuth from "@/libs/serverAuth";
 import prisma from '@/libs/prismadb'
+import { getSentiment } from "@/actions/get-sentiment";
+import { Prisma } from "@prisma/client";
 
 export default async function handler(
     req: NextApiRequest,
@@ -16,10 +18,35 @@ export default async function handler(
             const { currentUser } = await serverAuth(req, res)
             const { body } = req.body
 
+            const response = await getSentiment(body)
+
             const post = await prisma.post.create({
                 data: { body, userId: currentUser.id }
             })
+            const user = await prisma.user.findUnique({ where: { id: currentUser.id } })
 
+            if (user?.disposition &&
+                typeof user?.disposition === 'object') {
+                const disposition = user?.disposition as Prisma.JsonObject
+                disposition[response[0].label] = (disposition[response[0].label] as number) + 1
+
+                await prisma.user.update({
+                    where: { id: currentUser.id },
+                    data: { disposition }
+                })
+            } else {
+                var disposition = {
+                    positive: 0,
+                    neutral: 0,
+                    negative: 0
+                } as Prisma.JsonObject
+                disposition[response[0].label] = (disposition[response[0].label] as number) + 1
+
+                await prisma.user.update({
+                    where: { id: currentUser.id },
+                    data: { disposition }
+                })
+            }
             return res.status(200).json(post)
         }
 

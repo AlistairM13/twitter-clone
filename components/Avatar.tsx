@@ -33,10 +33,7 @@ const Avatar: React.FC<AvatarProps> = ({
         >
             <Image
                 fill
-                style={{
-                    objectFit: 'cover',
-                    borderRadius: '100%'
-                }}
+                className="rounded-full object-cover"
                 alt="Avatar"
                 onClick={onClick}
                 src={fetchedUser?.profileImage || '/images/placeholder.png'}

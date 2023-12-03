@@ -18,6 +18,7 @@ model User {
   coverImage      String?
   profileImage    String?
   hashedPassword  String?
+  disposition     Json
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   followingIds    String[]  @db.ObjectId

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { format } from 'date-fns'
 import { BiCalendar } from "react-icons/bi";
+import { RiEmotionHappyLine, RiEmotionUnhappyLine, RiEmotionNormalLine } from "react-icons/ri"
 
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useEditModal from "@/hooks/useEditModal";
@@ -17,7 +18,7 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
     const { data: currentUser } = useCurrentUser()
     const { data: fetchedUser } = useUser(userId)
     const { isFollowing, toggleFollow } = useFollow(userId)
-
+    const disposition = fetchedUser?.disposition
     const editModal = useEditModal()
 
     const createdAt = useMemo(() => {
@@ -26,6 +27,21 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
         return format(new Date(fetchedUser.createdAt), "MMMM yyyy")
 
     }, [fetchedUser?.createdAt])
+
+
+    const sentiment = useMemo(() => {
+        const dis = ["positive", "neutral", "negative"]
+        let max = -1
+        let maxSent = ""
+        for (let item of dis) {
+            if (disposition[item] > max) {
+                max = disposition[item]
+                maxSent = item
+            }
+        }
+        if (max == 0) return "neutral"
+        return maxSent
+    }, [disposition])
 
     return (
         <div className="border-b-[1px] border-neutral-800 pb-4">
@@ -59,6 +75,14 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
                     >
                         <BiCalendar size={24} />
                         <p>Joined {createdAt}</p>
+                    </div>
+                    <div
+                        className="flex items-center gap-2 mt-4 text-neutral-500"
+                    >
+                        {(sentiment == "positive") && <RiEmotionHappyLine size={24} />}
+                        {(sentiment == "negative") && <RiEmotionUnhappyLine size={24} />}
+                        {(sentiment == "neutral") && <RiEmotionNormalLine size={24} />}
+                        <p>Generally {sentiment}</p>
                     </div>
                 </div>
                 <div className="flex flex-row items-center mt-4 gap-6">
